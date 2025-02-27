@@ -26,10 +26,10 @@ You can find instructions for downloading ILIAS and relevant code for the variou
 ## Citation
 If you use ILIAS in your research or find our work helpful, please consider citing our paper and starring this repo
 ```bibtex
-@article{ilias2025,
+@inproceedings{ilias2025,
   title={{ILIAS}: Instance-Level Image retrieval At Scale},
   author={Kordopatis-Zilos, Giorgos and Stojnić, Vladan and Manko, Anna and Šuma, Pavel and Ypsilantis, Nikolaos-Antonios and Efthymiadis, Nikos and Laskar, Zakaria and Matas, Jiří and Chum, Ondřej and Tolias, Giorgos},
-  journal={arXiv:2502.11748},
+  booktitle={Computer Vision and Pattern Recognition (CVPR)},
   year={2025},
 } 
 ```
