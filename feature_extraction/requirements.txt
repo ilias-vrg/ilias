@@ -1,0 +1,12 @@
+# torch
+# torchvision
+h5py
+numpy
+tqdm
+einops
+timm
+xformers
+webdataset
+open_clip_torch
+opencv-python
+transformers
