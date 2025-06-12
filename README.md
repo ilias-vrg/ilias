@@ -17,9 +17,9 @@ The dataset includes **1,000 object instances** across diverse domains, with:
 ## Instructions
 You can find instructions for downloading ILIAS and relevant code for the various processes related to our benchmark in the links below
 * [download ILIAS](download)
-* feature extraction (coming soon...)
-* kNN search (coming soon...)
-* evaluation (coming soon...)
+* [feature extraction](feature_extraction)
+* [kNN search](knn_search)
+* [evaluation](evaluation)
 * re-ranking with local representations (coming soon...)
 * linear adaptation (coming soon...)
 
