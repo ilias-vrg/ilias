@@ -80,8 +80,8 @@ ilias_core
 
 ### taxonomy
 
-* The compiled taxonomy for the ILIAS object instances is shared in the [`taxonomy.json`](taxonomy.json) file. It is organized into a three-level hierarchy: coarse-level categories (e.g. `product`, `landmark`, `art`), mid-level categories (e.g. `food`, `architecture`, `sculpture`), and fine-level categories (e.g., `cake`, `building`, `3d print`). Each fine-level category contains the object instance identifiers. The `other` category includes objects that do not fit into any category. 
+* The compiled taxonomy for the ILIAS object instances is shared in the [`taxonomy.json`](../misc/taxonomy.json) file. It is organized into a three-level hierarchy: coarse-level categories (e.g. `product`, `landmark`, `art`), mid-level categories (e.g. `food`, `architecture`, `sculpture`), and fine-level categories (e.g., `cake`, `building`, `3d print`). Each fine-level category contains the object instance identifiers. The `other` category includes objects that do not fit into any category. 
 
 ## License
 
-All images captured by us or external collaborators are shared under [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/deed.en). The full list of captured images can be found [here](ilias_core_captured.txt). All external collaborators have signed consent agreements to share their images under the aforementioned license. The images downloaded from the internet are shared under their original license, which can be found in their original URL.
+All images captured by us or external collaborators are shared under [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/deed.en). The full list of captured images can be found [here](../misc/ilias_core_captured.txt). All external collaborators have signed consent agreements to share their images under the aforementioned license. The images downloaded from the internet are shared under their original license, which can be found in their original URL.

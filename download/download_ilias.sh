@@ -4,7 +4,8 @@
 DOWNLOAD_DIR=${1:-"./ilias"}
 MAX_FILES=${2:-0}
 MAX_RETRIES=${3:-1}
-CHECKSUMS_URL="https://vrg.fel.cvut.cz/ilias_data/checksums.txt"
+BASE_URL="https://vrg.fel.cvut.cz/ilias_data"
+CHECKSUMS_URL="$BASE_URL/checksums.txt"
 CHECKSUMS_FILE="$DOWNLOAD_DIR/checksums.txt"
 
 echo "Downloading files to: $DOWNLOAD_DIR"
@@ -18,6 +19,28 @@ mkdir -p "$DOWNLOAD_DIR"
 echo "Downloading checksums.txt from $CHECKSUMS_URL..."
 wget -q -O "$CHECKSUMS_FILE" "$CHECKSUMS_URL" || { echo "ERROR: Failed to download files.txt"; exit 1; }
 echo "Downloaded checksums.txt successfully."
+
+# List of files to download
+IMAGEID_URLS=(
+  "$BASE_URL/image_ids/image_query_ids.txt"
+  "$BASE_URL/image_ids/text_query_ids.txt"
+  "$BASE_URL/image_ids/positive_ids.txt"
+  "$BASE_URL/image_ids/distractor_ids.txt.gz"
+)
+
+echo "Downloading Image ID files..."
+for URL in "${IMAGEID_URLS[@]}"; do
+  # Remove the base URL to get the path
+  RELPATH="${URL#"$BASE_URL/"}"
+  # Extract the directory portion
+  DIR="$DOWNLOAD_DIR/$(dirname "$RELPATH")"
+  # Create local directory if needed
+  mkdir -p "$DIR"
+  # Download into that directory, preserving filename
+  echo "  - $(basename "$RELPATH") -> $DIR/"
+  wget -q --show-progress -O "$DIR/$(basename "$RELPATH")" "$URL"
+done
+echo "Image ID files lists downloaded."
 
 downloaded_count=-1
 
