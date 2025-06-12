@@ -1,0 +1,6 @@
+# torch
+# faiss
+h5py
+numpy
+tqdm
+json
