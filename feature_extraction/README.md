@@ -1,6 +1,6 @@
 # Feature Extraction
 
-This code implements feature extraction for the different partitions of ILIAS dataset. It supports several codebases and feature extraction based on raw images or tars of images. Additionally, it supports feature extraction for text descriptions of ILIAS queries.
+This code implements feature extraction for the different partitions of ILIAS dataset. It supports several codebases and feature extraction based on raw images or tars of images. Additionally, it supports feature extraction for global and local descriptors for images and text descriptions.
 
 ## Setup
 
@@ -18,7 +18,7 @@ Ensure the following are installed on your system
 
 ```bash
 git clone git@github.com:ilias-vrg/ilias.git
-cd ilias/feature_extraction
+cd ilias
 ```
 
 * [Optional] Create a new environment for the project
@@ -38,7 +38,7 @@ conda activate ilias
 * Install the required packages:
 
 ```bash
-pip install -r requirements.txt
+pip install -r feature_extraction/requirements.txt
 ```
 
 ## Usage
@@ -48,7 +48,7 @@ pip install -r requirements.txt
 * Run the `extract_features.py` script with the desired arguments:
 
 ```bash
-python extract_features.py \
+python feature_extraction/extract.py \
   --partition <ilias_partition> \
   --dataset_dir </path/to/images/or/tars/> \
   --hdf5_dir </path/to/hdf5> \
@@ -64,7 +64,7 @@ python extract_features.py \
 * Run the `extract_features.py` script with the desired arguments:
 
 ```bash
-python extract_features.py \
+python feature_extraction/extract.py \
   --partition text_queries \
   --dataset_dir </path/to/ilias/core/> \
   --hdf5_dir </path/to/hdf5> \
@@ -81,7 +81,7 @@ python extract_features.py \
 Feature extraction for queries
 
 ```bash
-python extract_features.py \
+python feature_extraction/extract.py \
   --partition queries \
   --dataset_dir /path/to/images \
   --hdf5_dir /path/to/hdf5 \
@@ -92,7 +92,7 @@ python extract_features.py \
 Feature extraction for positives
 
 ```bash
-python extract_features.py \
+python feature_extraction/extract.py \
   --partition positives \
   --dataset_dir /path/to/images \
   --hdf5_dir /path/to/hdf5 \
@@ -103,7 +103,7 @@ python extract_features.py \
 Feature extraction for text descriptions
 
 ```bash
-python extract_features.py \
+python feature_extraction/extract.py \
   --partition text_queries \
   --dataset_dir /path/to/ilias/core \
   --hdf5_dir /path/to/hdf5 \
@@ -117,10 +117,12 @@ python extract_features.py \
 
 * For the distrators, the extraction can be done in batches by providing the `start_tar`, the index of the tar to start the extraction, and the `total_tars`, the total number of tar to be extracted. Each tar in the [`yfcc100m`](https://vrg.fel.cvut.cz/ilias_data/yfcc100m/) folder contains 100k images.
 
+#### **full ILIAS**
+
 * For feature extraction of the first 1M distractors (10 yfcc100m tars), run the command
 
 ```bash
-python extract_features.py \
+python feature_extraction/extract.py \
   --partition distractors \
   --dataset_dir /path/to/tars \
   --hdf5_dir /path/to/hdf5 \
@@ -133,7 +135,7 @@ python extract_features.py \
 * Increase `start_tar` to extract the next 1M distractors, and run the command
 
 ```bash
-python extract_features.py \
+python feature_extraction/extract.py \
   --partition distractors \
   --dataset_dir /path/to/tars \
   --hdf5_dir /path/to/hdf5 \
@@ -147,6 +149,20 @@ python extract_features.py \
 
 * Running these commands will produce a several HDF5 files in the `/path/to/hdf5` directory. Each file is named `features_distractors_<index>.hdf5` (for example, `features_distractors_00000.hdf5`, `features_distractors_00001.hdf5`, etc.), and contains the feature vectors for the corresponding set of distractors.
 
+#### **mini-ILIAS**
+
+* To extract features only for mini-ILIAS, provide to the `image_ids` argument the path to [this file](https://vrg.fel.cvut.cz/ilias_data/image_ids/mini_ilias_yfcc100m_ids.txt).
+
+```bash
+python feature_extraction/extract.py \
+  --partition distractors \
+  --dataset_dir /path/to/tars \
+  --hdf5_dir /path/to/hdf5 \
+  --framework timm \
+  --model vit_large_patch16_siglip_384.webli \
+  --image_ids /path/to/mini-ilias-ids
+```
+
 ### Model settings
 
 * The parameters used for all models can be found in [`models.sh`](scripts/models.sh).
@@ -154,3 +170,9 @@ python extract_features.py \
 * An example slurm script to extract features for ILIAS-core and 1M of YFCC100m images is [`run_slurm.sh`](scripts/run_slurm.sh).
 
 * Edit the above scripts providing the local paths that the dataset is stored.
+
+### Extracted feaures
+
+* We provide the extracted features for some selected models [here](https://vrg.fel.cvut.cz/ilias_data/features/).
+
+* [Contact us](mailto:kordogeo@gel.cvut.cz?subject=[ILIAS]%20request%20for%20features) to provide features for models not included in the above link.

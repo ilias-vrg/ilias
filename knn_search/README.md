@@ -18,7 +18,7 @@ Ensure the following are installed on your system:
 
 ```bash
 git clone git@github.com:ilias-vrg/ilias.git
-cd ilias/knn_search
+cd ilias
 ```
 
 * [Optional] Create a new environment for the project
@@ -38,7 +38,7 @@ conda activate ilias
 * Install the required packages:
 
 ```bash
-pip install -r requirements.txt
+pip install -r knn_search/requirements.txt
 ```
 
 ## Usage
@@ -46,7 +46,7 @@ pip install -r requirements.txt
 * Run the `search.py` script with the desired arguments:
 
 ```bash
-python search.py 
+python knn_search/search.py \
    --query_hdf5 </path/to/query/hdf5> \
    --positive_hdf5 </path/to/positive/hdf5> \
    --distractor_hdf5 </path/to/distractor/hdf5> \
@@ -60,10 +60,10 @@ python search.py
 
 ### Example
 
-* To runs knn search with extracted features, run the following:
+* To runs kNN search with extracted features, run the following:
 
 ```bash
-python search.py 
+python knn_search/search.py \
    --query_hdf5 /path/to/hdf5/features_image_queries.hdf5 \
    --positive_hdf5 /path/to/hdf5/features_positive.hdf5 \
    --distractor_hdf5 /path/to/hdf5/features_distractors_{idx}.hdf5 \
@@ -76,6 +76,12 @@ python search.py
 ```
 
 * In the `distractor_hdf5` argument, the `{idx}` indicates the location in the path name that corresponds to the index of the distractor hdf5 files. It is replaced during loading with the corresponding index values according to `total_distractors`.
+
+* Search only in the mini-ILIAS by providing to the `selected_ids` argument the path to [this file](https://vrg.fel.cvut.cz/ilias_data/image_ids/mini_ilias_yfcc100m_ids.txt). It is not necessary to provide this argument if the extracted features contain only mini-ILIAS distractors.
+
+* You can also provide a linear adaptation layer using the `lin_adopt_path`. You can find the trained layers for all models used in out paper [here](https://vrg.fel.cvut.cz/ilias_data/lin_adapt_layers/).
+
+### Output
 
 * The script supports two formats for storing the similarity scores:
 
@@ -108,4 +114,8 @@ Pickle
 }
 ```
 
-* You can also provide a linear adaptation layer using the `lin_adopt_path`. You can find the trained layers for all models used in out paper [here](https://vrg.fel.cvut.cz/ilias_data/lin_adapt_layers/).
+### Estimated similarities
+
+* We provide the estimated similarities based some selected models [here](https://vrg.fel.cvut.cz/ilias_data/similarities/).
+
+* [Contact us](mailto:kordogeo@gel.cvut.cz?subject=[ILIAS]%20request%20for%20similarities) to provide similarities based on models not included in the above link.

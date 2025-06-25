@@ -1,6 +1,6 @@
 # ILIAS evaluation
 
-This code implements the evaluation on ILIAS dataset via mean Average Precision (mAP).
+This code implements the evaluation on ILIAS dataset via mean Average Precision at k (mAP@k).
 
 ## Setup
 
@@ -16,7 +16,7 @@ Ensure the following are installed on your system
 
 ```bash
 git clone git@github.com:ilias-vrg/ilias.git
-cd ilias/evaluation
+cd ilias
 ```
 
 * [Optional] Create a new environment for the project
@@ -36,7 +36,7 @@ conda activate ilias
 * Install the required packages:
 
 ```bash
-pip install -r requirements.txt
+pip install -r evaluation/requirements.txt
 ```
 
 * Make sure that the `image_ids` folder exists in the dataset directory. Otherwise, run the following command:
@@ -50,11 +50,12 @@ bash download_ids.sh /path/to/dataset/
 * Run the `evaluation.py` script providing the file of similarities in either `json` or `pickle` format, and the dataset directory:
 
 ```bash
-python evaluation.py \
+python evaluation/evaluate.py \
   --dataset_dir /path/to/dataset/ \
-  --similarity_file <similarity_file>
+  --similarity_file <similarity_file> \
+  --k <value_of_k>
 ```
 
-* The output of the script is the mAP achieved with the provided `similarity_file`.
+* The output of the script is the mAP@k achieved with the provided `similarity_file`.
 
 * Providing a file path name to the `result_file` argument will generate a pickle file containing detailed results. Specifically, it contains average precision per query, oracle score, performance per (sub)category (cf. Figure 5, F in the paper), and performance per scale/clutter groups (cf. Fig. 7).
