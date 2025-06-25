@@ -29,7 +29,7 @@ def main(args):
         args.positive_hdf5,
         distractor_hdf5=args.distractor_hdf5,
         total_distractors=args.total_distractors,
-        selected=args.selected,
+        selected_ids=args.selected_ids,
     )
 
     # Initialize the searcher with the provided parameters.
@@ -89,7 +89,7 @@ if __name__ == "__main__":
         help="Number of HDF5 files of distractors to be loaded. This depends on the settings used during feature extraction.",
     )
     parser.add_argument(
-        "--selected",
+        "--selected_ids",
         type=str,
         default=None,
         help="File of selected image IDs to filter the distractors",

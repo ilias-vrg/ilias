@@ -16,7 +16,7 @@ class FeatureDataset(Dataset):
         positive_hdf5: str,
         distractor_hdf5: Optional[str] = None,
         total_distractors: int = 0,
-        selected: Optional[str] = None,
+        selected_ids: Optional[str] = None,
     ) -> None:
         """
         Initialize the FeatureDataset by loading features from HDF5 files.
@@ -26,7 +26,7 @@ class FeatureDataset(Dataset):
             positive_hdf5 (str): Path to the HDF5 file containing positive example features.
             distractor_hdf5 (Optional[str]): Template path for distractor HDF5 files (must contain a placeholder '{id}').
             total_distractors (int): Total number of distractor HDF5 files to load.
-            selected (Optional[str]): Path to a file containing selected image IDs for filtering.
+            selected_ids (Optional[str]): Path to a file containing selected image IDs for filtering.
         """
         print("> loading features from HDF5 files...")
         self.query_feat, self.query_ids = load_features(query_hdf5)
@@ -47,26 +47,26 @@ class FeatureDataset(Dataset):
             [self.positive_ids, *self.distractor_ids], axis=0
         )
 
-        self.selected = None
-        if selected is not None:
+        self.selected_ids = None
+        if selected_ids is not None:
             # Convert positive IDs to a set for faster membership tests.
             self.pos_ids = set(self.positive_ids)
-            self.selected = set(np.loadtxt(selected, dtype=str).tolist())
+            self.selected_ids = set(np.loadtxt(selected_ids, dtype=str).tolist())
             # Filter the database IDs according to the selected set.
-            self.db_ids, _ = self.filter(self.db_ids, self.selected)
+            self.db_ids, _ = self.filter(self.db_ids, self.selected_ids)
 
         print(f"number of queries: {len(self.query_ids)}")
         print(f"number of database: {len(self.db_ids)}")
 
     def filter(
-        self, idx: np.ndarray, selected: Set[str]
+        self, idx: np.ndarray, selected_ids: Set[str]
     ) -> Tuple[np.ndarray, List[int]]:
         """
         Filter the provided indices based on selected image IDs.
 
         Args:
             idx (np.ndarray): Array of image IDs.
-            selected (Set[str]): Set of selected image IDs.
+            selected_ids (Set[str]): Set of selected image IDs.
 
         Returns:
             Tuple[np.ndarray, List[int]]: A tuple containing the filtered array of IDs and
@@ -75,7 +75,7 @@ class FeatureDataset(Dataset):
         filtered_positions = []
         for i, image_id in enumerate(idx):
             parts = image_id.split("/")
-            if image_id in self.pos_ids or (len(parts) > 1 and parts[1] in selected):
+            if image_id in self.pos_ids or (len(parts) > 1 and parts[1] in selected_ids):
                 filtered_positions.append(i)
         filtered_idx = idx[filtered_positions]
         return filtered_idx, filtered_positions
@@ -139,8 +139,8 @@ class FeatureDataset(Dataset):
         # Adjust index for distractor features (first distractor is at index 1).
         db_feat = self.distractor_feat[idx - 1][:]
         db_ids = self.distractor_ids[idx - 1][:]
-        if self.selected is not None:
-            _, dist_idx = self.filter(db_ids, self.selected)
+        if self.selected_ids is not None:
+            _, dist_idx = self.filter(db_ids, self.selected_ids)
             if not len(dist_idx):
                 return np.array([]), np.array([])
             return db_feat[dist_idx], db_ids[dist_idx]

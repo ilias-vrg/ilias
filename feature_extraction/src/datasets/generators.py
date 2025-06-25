@@ -82,7 +82,7 @@ def get_wds_dataset(
     preprocess_img: Callable[[Image.Image], torch.Tensor],
     batch_size: int = 64,
     num_workers: int = 4,
-    image_ids: Optional[List[str]] = None,
+    selected_ids: Optional[List[str]] = None,
 ) -> Tuple[wds.WebLoader, wds.DataPipeline]:
     """
     Creates a WebDataset pipeline and DataLoader for loading image data from shards.
@@ -93,7 +93,7 @@ def get_wds_dataset(
         preprocess_img (callable): Function to preprocess images.
         batch_size (int): Number of samples per batch (default: 64).
         num_workers (int): Number of worker threads for data loading (default: 4).
-        image_ids (list): Optional list of image IDs to filter the dataset.
+        selected_ids (list): Optional list of selected image IDs to filter the dataset.
 
     Returns:
         tuple: A DataLoader and the underlying dataset pipeline.
@@ -101,8 +101,8 @@ def get_wds_dataset(
     assert input_shards is not None, "Input shards must be specified."
     pipeline = [wds.SimpleShardList(input_shards)]
 
-    if image_ids is not None:
-        image_ids = set(image_ids)
+    if selected_ids is not None:
+        selected_ids = set(selected_ids)
 
     # Define the WebDataset pipeline
     pipeline.extend(
@@ -110,7 +110,7 @@ def get_wds_dataset(
             wds.split_by_worker,
             wds.tarfile_to_samples(handler=log_and_continue),
             wds.select(filter_no_image),
-            wds.select(partial(in_shortlist, image_ids)),
+            wds.select(partial(in_shortlist, selected_ids)),
             wds.decode("pilrgb", handler=log_and_continue),
             wds.rename(image="jpg", id="__key__", shard="__url__"),
             wds.map(merge_id_shard),

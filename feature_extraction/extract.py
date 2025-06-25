@@ -153,7 +153,7 @@ def extract_yfcc(extractor: nn.Module, preprocessing: transforms.Compose, args) 
             preprocess_img=preprocessing,
             batch_size=args.webdl_batch_size,
             num_workers=args.num_workers,
-            image_ids=args.image_ids,
+            selected_ids=args.selected_ids,
         )
 
         features, index = extract_features(extractor, loader, args)
@@ -186,7 +186,7 @@ def extract_ilias(
         batch_size=args.webdl_batch_size,
         num_workers=args.num_workers,
         partition=args.partition,
-        image_ids=args.image_ids,
+        selected_ids=args.selected_ids,
         masking=args.masking,
         crop_resize=args.crop_resize,
     )
@@ -194,12 +194,12 @@ def extract_ilias(
     print(f"\n> extract features for {len(dataset)} images")
     features, index = extract_features(extractor, loader, args)
 
-    if args.image_ids is None:
+    if args.selected_ids is None:
         idx = np.argsort(index)
     else:
-        # Create an ordering based on input image_ids.
+        # Create an ordering based on input selected_ids.
         idx_map = {img: i for i, img in enumerate(index)}
-        idx = [idx_map[img] for img in args.image_ids]
+        idx = [idx_map[img] for img in args.selected_ids]
     index = [index[i] for i in idx]
     features = features[idx]
 
@@ -266,8 +266,8 @@ def main(args) -> None:
     print(preprocessing)
 
     # Load image ids from file if specified.
-    if args.image_ids is not None:
-        args.image_ids = utils.load_image_ids(args.image_ids)
+    if args.selected_ids is not None:
+        args.selected_ids = utils.load_image_ids(args.selected_ids)
 
     if args.partition == "distractors":
         return extract_yfcc(extractor, preprocessing, args)
@@ -432,7 +432,7 @@ if __name__ == "__main__":
         help="Store extracted features in FP16 if True",
     )
     parser.add_argument(
-        "--image_ids",
+        "--selected_ids",
         type=str,
         default=None,
         help="File containing image IDs to extract features for",
