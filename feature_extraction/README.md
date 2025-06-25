@@ -69,7 +69,7 @@ python feature_extraction/extract.py \
   --dataset_dir </path/to/ilias/core/> \
   --hdf5_dir </path/to/hdf5> \
   --framework text \
-  --model <model_name> \
+  --model <model_name>
 ```
 
 * You need to specify the `model` that you want to use for feature extraction.
@@ -87,6 +87,7 @@ python feature_extraction/extract.py \
   --hdf5_dir /path/to/hdf5 \
   --framework timm \
   --model vit_large_patch16_siglip_384.webli \
+  --resolution 512
 ```
 
 Feature extraction for positives
@@ -98,6 +99,7 @@ python feature_extraction/extract.py \
   --hdf5_dir /path/to/hdf5 \
   --framework timm \
   --model vit_large_patch16_siglip_384.webli \
+  --resolution 512
 ```
 
 Feature extraction for text descriptions
@@ -108,7 +110,7 @@ python feature_extraction/extract.py \
   --dataset_dir /path/to/ilias/core \
   --hdf5_dir /path/to/hdf5 \
   --framework text \
-  --model vit_large_patch16_siglip_384.webli \
+  --model vit_large_patch16_siglip_384.webli
 ```
 
 * These commands will generate three HDF5 files in the `/path/to/hdf5` directory with names `features_queries.hdf5`, `features_positives.hdf5`, and `features_text_queries.hdf5` containing the features of the queries, positive images, and instance descriptions in ILIAS-core, respectively.
@@ -130,6 +132,7 @@ python feature_extraction/extract.py \
   --total_tars 10 \
   --framework timm \
   --model vit_large_patch16_siglip_384.webli \
+  --resolution 512
 ```
 
 * Increase `start_tar` to extract the next 1M distractors, and run the command
@@ -143,6 +146,7 @@ python feature_extraction/extract.py \
   --total_tars 10 \
   --framework timm \
   --model vit_large_patch16_siglip_384.webli \
+  --resolution 512
 ```
 
 * Continue until you process all tar in the `yfcc100m` folder.
@@ -160,6 +164,7 @@ python feature_extraction/extract.py \
   --hdf5_dir /path/to/hdf5 \
   --framework timm \
   --model vit_large_patch16_siglip_384.webli \
+  --resolution 512 \
   --image_ids /path/to/mini-ilias-ids
 ```
 
