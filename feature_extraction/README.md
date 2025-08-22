@@ -45,7 +45,7 @@ pip install -r feature_extraction/requirements.txt
 
 ### Image feature extraction
 
-* Run the `extract_features.py` script with the desired arguments:
+* Run the `extract.py` script with the desired arguments:
 
 ```bash
 python feature_extraction/extract.py \
@@ -61,7 +61,7 @@ python feature_extraction/extract.py \
 
 ### Text feature extraction
 
-* Run the `extract_features.py` script with the desired arguments:
+* Run the `extract.py` script with the desired arguments:
 
 ```bash
 python feature_extraction/extract.py \
@@ -82,7 +82,7 @@ Feature extraction for queries
 
 ```bash
 python feature_extraction/extract.py \
-  --partition queries \
+  --partition image_queries \
   --dataset_dir /path/to/images \
   --hdf5_dir /path/to/hdf5 \
   --framework timm \
@@ -107,13 +107,13 @@ Feature extraction for text descriptions
 ```bash
 python feature_extraction/extract.py \
   --partition text_queries \
-  --dataset_dir /path/to/ilias/core \
+  --dataset_dir /path/to/images \
   --hdf5_dir /path/to/hdf5 \
   --framework text \
   --model vit_large_patch16_siglip_384.webli
 ```
 
-* These commands will generate three HDF5 files in the `/path/to/hdf5` directory with names `features_queries.hdf5`, `features_positives.hdf5`, and `features_text_queries.hdf5` containing the features of the queries, positive images, and instance descriptions in ILIAS-core, respectively.
+* These commands will generate three HDF5 files in the `/path/to/hdf5` directory with names `features_image_queries.hdf5`, `features_positives.hdf5`, and `features_text_queries.hdf5` containing the features of the queries, positive images, and instance descriptions in ILIAS-core, respectively.
 
 ### Example with YFCC100M
 
@@ -155,7 +155,7 @@ python feature_extraction/extract.py \
 
 #### **mini-ILIAS**
 
-* To extract features only for mini-ILIAS, provide to the `image_ids` argument the path to [this file](https://vrg.fel.cvut.cz/ilias_data/image_ids/mini_ilias_yfcc100m_ids.txt).
+* To extract features only for mini-ILIAS, provide to the `selected_ids` argument the path to [this file](https://vrg.fel.cvut.cz/ilias_data/image_ids/mini_ilias_yfcc100m_ids.txt).
 
 ```bash
 python feature_extraction/extract.py \
@@ -165,7 +165,7 @@ python feature_extraction/extract.py \
   --framework timm \
   --model vit_large_patch16_siglip_384.webli \
   --resolution 512 \
-  --image_ids /path/to/mini-ilias-ids
+  --selected_ids /path/to/mini-ilias-ids
 ```
 
 ### Model settings
