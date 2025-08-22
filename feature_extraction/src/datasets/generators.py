@@ -142,7 +142,7 @@ def get_image_dataset(
     partition: str = "queries",
     masking: bool = False,
     crop_resize: bool = False,
-    image_ids: Optional[List[str]] = None,
+    selected_ids: Optional[List[str]] = None,
 ) -> Tuple[DataLoader, Dataset]:
     """
     Creates a PyTorch Dataset and DataLoader for loading images from a directory.
@@ -154,7 +154,7 @@ def get_image_dataset(
         batch_size (int): Number of samples per batch (default: 64).
         num_workers (int): Number of worker threads for data loading (default: 4).
         partition (str): The partition of the dataset to use (default: "queries").
-        image_ids (list): Optional list of image IDs to filter the dataset.
+        selected_ids (list): Optional list of image IDs to filter the dataset.
 
     Returns:
         tuple: A DataLoader and the underlying dataset.
@@ -163,7 +163,7 @@ def get_image_dataset(
         dataset_dir,
         preprocess_img,
         partition=partition,
-        image_ids=image_ids,
+        selected_ids=selected_ids,
         masking=masking,
         crop_resize=crop_resize,
     )
@@ -214,7 +214,7 @@ class ImageDataset(Dataset):
         transform (callable): Optional transform to apply to images.
         extensions (list): List of allowed file extensions (default: ["jpg", "jpeg", "png"]).
         partition (str): The partition of the dataset to use (default: "queries").
-        image_ids (list): Optional list of image IDs to filter the dataset.
+        selected_ids (list): Optional list of image IDs to filter the dataset.
     """
 
     def __init__(
@@ -223,13 +223,13 @@ class ImageDataset(Dataset):
         transform: Optional[Callable[[Image.Image], torch.Tensor]] = None,
         extensions: List[str] = ["jpg", "jpeg", "png"],
         partition: str = "queries",
-        image_ids: Optional[List[str]] = None,
+        selected_ids: Optional[List[str]] = None,
         masking: bool = False,
         crop_resize: bool = False,
     ):
         self.root_dir = root_dir
 
-        if image_ids is None:
+        if selected_ids is None:
             # Generate a list of image IDs based on file extensions and query mode
             extensions = set(sum([[e, e.lower(), e.upper()] for e in extensions], []))
 
@@ -245,7 +245,7 @@ class ImageDataset(Dataset):
 
             self.image_ids.sort()
         else:
-            self.image_ids = image_ids
+            self.image_ids = selected_ids
 
         self.transform = transform
         self.masking = masking

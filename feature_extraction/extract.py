@@ -318,7 +318,7 @@ if __name__ == "__main__":
         "--overwrite",
         type=utils.bool_flag,
         default=False,
-        help="Overwrite existing feature files if set",
+        help="Overwrite existing feature files if True",
     )
     parser.add_argument(
         "--framework",
@@ -399,7 +399,7 @@ if __name__ == "__main__":
         "--comp_fp16",
         type=utils.bool_flag,
         default=True,
-        help="Use mixed precision (FP16) for feature extraction",
+        help="Use mixed precision (FP16) for feature extraction if True",
     )
     parser.add_argument(
         "--start_tar",
