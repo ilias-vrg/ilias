@@ -294,7 +294,7 @@ class ILIAS:
         all_similarities=None,
         query_ids=None,
         db_ids=None,
-        similarities=None,
+        sims=None,
         ranks=None,
         k=1000,
         report=False,
@@ -305,7 +305,7 @@ class ILIAS:
             all_similarities (dict, optional): Dictionary of all similarities for each query.
             query_ids (list, optional): List of query IDs.
             db_ids (np.ndarray, optional): Array of database IDs.
-            similarities (np.ndarray, optional): Array of similarity scores.
+            sims (np.ndarray, optional): Array of similarity scores.
             ranks (np.ndarray, optional): Array of ranks corresponding to the IDs.
             k (int): Number of top results to consider for mAP calculation.
             report (bool): Whether to generate a detailed report.
@@ -313,6 +313,6 @@ class ILIAS:
             dict: Evaluation report containing mAP and other metrics.
         """
         if all_similarities is None:
-            return self._evaluate_pkl(query_ids, db_ids, similarities, ranks, k, report)
+            return self._evaluate_pkl(query_ids, db_ids, sims, ranks, k, report)
         else:
             return self._evaluate_json(all_similarities, k, report)
