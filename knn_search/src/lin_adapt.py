@@ -34,7 +34,7 @@ class LinearAdapter(nn.Module):
         return x
 
 
-def load_lin_adopt_layer(weights_path, use_gpu=False):
+def load_lin_adapt_layer(weights_path, use_gpu=False):
     """Load a linear adaptation layer from a given weights path.
     Args:
         weights_path (str): Path to the weights file.
@@ -42,19 +42,19 @@ def load_lin_adopt_layer(weights_path, use_gpu=False):
     Returns:
         LinearAdapter: An instance of the LinearAdapter with loaded weights.
     """
-    lin_adopt_layer = nn.Identity()
+    lin_adapt_layer = nn.Identity()
     if weights_path is not None:
         weights = torch.load(weights_path, map_location="cpu")
         out_features, in_features = weights["layer.weight"].shape
-        lin_adopt_layer = LinearAdapter(
+        lin_adapt_layer = LinearAdapter(
             in_features=in_features, out_features=out_features
         )
-        lin_adopt_layer.load_state_dict(weights)
+        lin_adapt_layer.load_state_dict(weights)
         print("\n> linear adaptation layer loaded from:", weights_path)
 
-        lin_adopt_layer.eval()
+        lin_adapt_layer.eval()
         if use_gpu:
-            lin_adopt_layer = lin_adopt_layer.cuda()
+            lin_adapt_layer = lin_adapt_layer.cuda()
         else:
-            lin_adopt_layer = lin_adopt_layer.cpu()
-    return lin_adopt_layer
+            lin_adapt_layer = lin_adapt_layer.cpu()
+    return lin_adapt_layer

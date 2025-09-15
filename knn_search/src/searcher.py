@@ -5,7 +5,7 @@ from tqdm import tqdm
 from torch.utils.data import Dataset, DataLoader
 from typing import Optional, Tuple, List
 
-from src.lin_adapt import load_lin_adopt_layer
+from src.lin_adapt import load_lin_adapt_layer
 
 
 class Searcher:
@@ -14,7 +14,7 @@ class Searcher:
         db: Dataset,
         k: int = 1000,
         use_gpu: bool = True,
-        lin_adopt: Optional[str] = None,
+        lin_adapt: Optional[str] = None,
         query_expansion: int = 0,
         metric_type: int = faiss.METRIC_INNER_PRODUCT,
     ):
@@ -25,14 +25,14 @@ class Searcher:
             db (Dataset): Database embeddings.
             k (int): Number of nearest neighbors to retrieve.
             use_gpu (bool): If True, perform searches on GPU.
-            lin_adopt (Optional[str]): Path to a linear adaptation layer model.
+            lin_adapt (Optional[str]): Path to a linear adaptation layer model.
             query_expansion (int): Number of neighbors to use for query expansion.
             metric_type (int): FAISS metric type (e.g., faiss.METRIC_INNER_PRODUCT).
         """
         self.db = db
         self.k = k
         self.use_gpu = use_gpu
-        self.lin_adopt = load_lin_adopt_layer(lin_adopt, use_gpu)
+        self.lin_adapt = load_lin_adapt_layer(lin_adapt, use_gpu)
         self.query_expansion = query_expansion
         self.metric_type = metric_type
 
@@ -74,9 +74,9 @@ class Searcher:
             np.ndarray: Adapted embeddings.
         """
         x = x.astype(np.float32)
-        if self.lin_adopt is not None:
+        if self.lin_adapt is not None:
             x = self.to_tensor(x)
-            x = self.lin_adopt(x)
+            x = self.lin_adapt(x)
             x = x.cpu().numpy()
         return x
 

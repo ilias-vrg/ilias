@@ -75,7 +75,9 @@ class FeatureDataset(Dataset):
         filtered_positions = []
         for i, image_id in enumerate(idx):
             parts = image_id.split("/")
-            if image_id in self.pos_ids or (len(parts) > 1 and parts[1] in selected_ids):
+            if image_id in self.pos_ids or (
+                len(parts) > 1 and parts[1] in selected_ids
+            ):
                 filtered_positions.append(i)
         filtered_idx = idx[filtered_positions]
         return filtered_idx, filtered_positions

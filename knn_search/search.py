@@ -36,7 +36,7 @@ def main(args):
     knn = Searcher(
         dataset,
         k=args.k,
-        lin_adopt=args.lin_adopt_path,
+        lin_adapt=args.lin_adapt_path,
         use_gpu=args.use_gpu,
         query_expansion=args.query_expansion,
     )
@@ -107,7 +107,7 @@ if __name__ == "__main__":
         help="Number of nearest neighbors that will form the shortlist for re-ranking",
     )
     parser.add_argument(
-        "--lin_adopt_path",
+        "--lin_adapt_path",
         type=str,
         default=None,
         help="Path to the file where the linear adaptation layer is stored",
