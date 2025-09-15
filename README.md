@@ -1,10 +1,10 @@
 <p align="center">
-<img src="banner.png" width="100%"/>
+<img src="misc/logo/banner.png" width="100%"/>
 </p>
 
 **ILIAS** is a large-scale test dataset for evaluation on **Instance-Level Image retrieval At Scale**. It is designed to support future research in **image-to-image** and **text-to-image** retrieval for particular objects and serves as a benchmark for evaluating representations of foundation or customized vision and vision-language models, as well as specialized retrieval techniques. 
 
-[<img src="https://cdn.iconscout.com/icon/free/png-256/free-website-icon-download-in-svg-png-gif-file-formats--web-webpage-ui-miscellaneous-pack-user-interface-icons-3395056.png?f=webp&w=256" width="20" style="background-color: white;"> **website**](https://vrg.fel.cvut.cz/ilias/)  |  [<img src="https://icons.veryicon.com/png/o/miscellaneous/streamline/database-39.png" width="20" style="background-color: white;"> **dataset**](https://vrg.fel.cvut.cz/ilias_data/)  |  [<img src="https://yuxiaoba.github.io/assets/images/badges/Arxiv.png" width="20" style="background-color: white;"> **arxiv**](https://arxiv.org/abs/2502.11748) | [<img src="https://huggingface.co/datasets/huggingface/brand-assets/resolve/main/hf-logo.png" width="20" style="background-color: white;"> **huggingface**](https://huggingface.co/datasets/vrg-prague/ilias)
+[<img src="misc/logo/web.png" width="20" style="background-color: white;"> **website**](https://vrg.fel.cvut.cz/ilias/)  |  [<img src="misc/logo/database.png" width="20" style="background-color: white;"> **dataset**](https://vrg.fel.cvut.cz/ilias_data/)  |  [<img src="misc/logo/arxiv.png" width="20" style="background-color: white;"> **arxiv**](https://arxiv.org/abs/2502.11748) | [<img src="misc/logo/hf-logo.png" width="20" style="background-color: white;"> **huggingface**](https://huggingface.co/datasets/vrg-prague/ilias)
 
 ## Composition
 
