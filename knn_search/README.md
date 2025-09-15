@@ -43,7 +43,7 @@ pip install -r knn_search/requirements.txt
 
 ## Usage
 
-* Run the `search.py` script with the desired arguments:
+* Run the `search.py` script to perform the kNN search with the desired arguments:
 
 ```bash
 python knn_search/search.py \
@@ -55,8 +55,9 @@ python knn_search/search.py \
    --save_dir </path/to/similarities> \
    --save_name <name_of_similarity_file> \
    --save_as {json, pickle} \
-   --lin_adopt_path </path/to/lin_adopt_layer>
+   --lin_adapt_path </path/to/lin_adapt_layer>
 ```
+
 
 ### Example
 
@@ -72,14 +73,15 @@ python knn_search/search.py \
    --save_path /path/to/similarities/ \
    --save_name similarities \
    --save_as json \
-   --lin_adopt_path /path/to/lin_adapt_layers/vit_large_patch16_siglip_384.webli.pth
+   --lin_adapt_path /path/to/lin_adapt_layers/vit_large_patch16_siglip_384.webli.pth
 ```
 
 * In the `distractor_hdf5` argument, the `{idx}` indicates the location in the path name that corresponds to the index of the distractor hdf5 files. It is replaced during loading with the corresponding index values according to `total_distractors`.
 
 * Search only in the mini-ILIAS by providing to the `selected_ids` argument the path to [this file](https://vrg.fel.cvut.cz/ilias_data/image_ids/mini_ilias_yfcc100m_ids.txt). It is not necessary to provide this argument if the extracted features contain only mini-ILIAS distractors.
 
-* You can also provide a linear adaptation layer using the `lin_adopt_path`. You can find the trained layers for all models used in out paper [here](https://vrg.fel.cvut.cz/ilias_data/lin_adapt_layers/).
+* You can also provide a linear adaptation layer using the `lin_adapt_path`. You can find the trained layers for all models used in out paper [here](https://vrg.fel.cvut.cz/ilias_data/lin_adapt_layers/).
+You can also train your own linear adaptation layers by following the guidelines in the [`linear_adaptation`](https://github.com/ilias-vrg/ilias/tree/main/linear_adaptation) directory of this codebase.
 
 ### Output
 
