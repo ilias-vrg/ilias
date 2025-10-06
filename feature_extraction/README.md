@@ -149,7 +149,7 @@ python feature_extraction/extract.py \
   --resolution 512
 ```
 
-* Continue until you process all tar in the `yfcc100m` folder.
+* Continue until you process all the 1000 tar files in the `yfcc100m` folder.
 
 * Running these commands will produce a several HDF5 files in the `/path/to/hdf5` directory. Each file is named `features_distractors_<index>.hdf5` (for example, `features_distractors_00000.hdf5`, `features_distractors_00001.hdf5`, etc.), and contains the feature vectors for the corresponding set of distractors.
 
@@ -170,13 +170,13 @@ python feature_extraction/extract.py \
 
 ### Model settings
 
-* [**note**] If you want to use DINOv3, edit [here](src/model/extractors/facebook.py#L13) the corresponding model URLs provided by Meta.
-
 * The parameters used for all models can be found in [`models.sh`](scripts/models.sh).
 
 * An example slurm script to extract features for ILIAS-core and 1M of YFCC100m images is [`run_slurm.sh`](scripts/run_slurm.sh).
 
 * Edit the above scripts providing the local paths that the dataset is stored.
+
+* [**note**] To extract descriptors using DINOv3, edit [here](src/model/extractors/facebook.py#L13) the corresponding model URLs [provided by Meta](https://ai.meta.com/resources/models-and-libraries/dinov3-downloads/).
 
 ### Extracted feaures
 
