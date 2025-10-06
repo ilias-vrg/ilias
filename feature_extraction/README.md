@@ -170,6 +170,8 @@ python feature_extraction/extract.py \
 
 ### Model settings
 
+* [**note**] If you want to use DINOv3, edit [here](src/model/extractors/facebook.py#L13) the corresponding model URLs provided by Meta.
+
 * The parameters used for all models can be found in [`models.sh`](scripts/models.sh).
 
 * An example slurm script to extract features for ILIAS-core and 1M of YFCC100m images is [`run_slurm.sh`](scripts/run_slurm.sh).
