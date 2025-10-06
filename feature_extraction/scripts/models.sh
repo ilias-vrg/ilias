@@ -140,3 +140,11 @@ sbatch scripts/run_slurm.sh "$ILIAS_ROOT" "$YFCC_ROOT" "$FEATURE_ROOT" timm vit_
 sbatch scripts/run_slurm.sh "$ILIAS_ROOT" "$YFCC_ROOT" "$FEATURE_ROOT" timm vit_large_patch16_siglip_384.v2_webli head 512 true
 # SigLIP2 ViT-L/16@512
 sbatch scripts/run_slurm.sh "$ILIAS_ROOT" "$YFCC_ROOT" "$FEATURE_ROOT" timm vit_large_patch16_siglip_512.v2_webli head 724 true
+# PE ViT-B/14
+sbatch scripts/run_slurm.sh "$ILIAS_ROOT" "$YFCC_ROOT" "$FEATURE_ROOT" timm vit_pe_core_base_patch16_224.fb head 384 true
+# PE ViT-L/14@336
+sbatch scripts/run_slurm.sh "$ILIAS_ROOT" "$YFCC_ROOT" "$FEATURE_ROOT" timm vit_pe_core_large_patch14_336.fb head 512 true
+# DINOv3 ViT-B/16
+sbatch scripts/run_slurm.sh "$ILIAS_ROOT" "$YFCC_ROOT" "$FEATURE_ROOT" fb dinov3_vitb16 head 768 false
+# DINOv3 ViT-L/16
+sbatch scripts/run_slurm.sh "$ILIAS_ROOT" "$YFCC_ROOT" "$FEATURE_ROOT" fb dinov3_vitl16 head 768 false

@@ -10,6 +10,11 @@ from functools import partial
 from .generic_extractor import GenericFeatureExtractor
 from ...datasets.transforms import MultiplierPadding
 
+MODEL_WEIGHTS = {
+    "dinov3_vitb16": "https://dl.fbaipublicfiles.com/dinov3",
+    "dinov3_vitl16": "https://dl.fbaipublicfiles.com/dinov3",
+}
+
 
 class FBModel(GenericFeatureExtractor):
     def __init__(self, **kargs):
@@ -38,7 +43,9 @@ class FBModel(GenericFeatureExtractor):
         Raises:
             NotImplementedError: If the model name is not recognized.
         """
-        if "dinov2" in self.name:
+        if "dinov3" in self.name:
+            return DINOv3(name=self.name)
+        elif "dinov2" in self.name:
             return DINOv2(name=self.name)
         elif "dino" in self.name:
             return DINO(name=self.name)
@@ -114,6 +121,43 @@ class DINOv2(nn.Module):
         super(DINOv2, self).__init__()
         self.model = torch.hub.load("facebookresearch/dinov2", name)
         self.pad = MultiplierPadding(14)
+
+    def forward(self, x: torch.Tensor, return_patch_token: bool = False):
+        """
+        Extract features from the input tensor.
+
+        Args:
+            x (torch.Tensor): Input tensor.
+            return_patch_token (bool): Whether to return patch tokens.
+
+        Returns:
+            torch.Tensor or Tuple[torch.Tensor, torch.Tensor]: Extracted features.
+        """
+        x = self.pad(x)
+
+        if not return_patch_token:
+            return self.model(x)
+
+        x, cls_token = self.model.get_intermediate_layers(
+            x, return_class_token=True, reshape=True
+        )[-1]
+
+        return cls_token, x
+
+
+class DINOv3(nn.Module):
+    def __init__(self, name: str):
+        """
+        Initialize the DINOv3 model.
+
+        Args:
+            name (str): Name of the DINOv3 model.
+        """
+        super(DINOv3, self).__init__()
+        self.model = torch.hub.load(
+            "facebookresearch/dinov3", name, weights=MODEL_WEIGHTS[name]
+        )
+        self.pad = MultiplierPadding(16 if "16" in name else 0)
 
     def forward(self, x: torch.Tensor, return_patch_token: bool = False):
         """

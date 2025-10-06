@@ -52,7 +52,7 @@ def extract_features(
             for bimgs in utils.batching(images, args.batch_size):
                 bimgs = bimgs.cuda()
                 # Use automatic mixed precision if enabled.
-                with torch.cuda.amp.autocast(enabled=args.comp_fp16):
+                with torch.amp.autocast("cuda", enabled=args.comp_fp16):
                     scales = [0.707, 1, 1.414] if args.multiscale else [1]
                     rotations = [0, 90, 180, 270] if args.multirotate else [0]
                     feat = extractor(bimgs, scales, rotations)

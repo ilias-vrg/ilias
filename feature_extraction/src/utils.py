@@ -54,6 +54,8 @@ MODEL_MAPPING = {
         "hf-hub:timm/ViT-SO400M-16-SigLIP2-512",
         None,
     ),
+    "vit_pe_core_base_patch16_224.fb": ("hf-hub:timm/PE-Core-B-16", None),
+    "vit_pe_core_large_patch14_336.fb": ("hf-hub:timm/PE-Core-L-14-336", None),
 }
 
 

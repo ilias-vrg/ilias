@@ -49,12 +49,12 @@ class TimmModel(GenericFeatureExtractor):
 
     def _is_clip(self) -> bool:
         """
-        Check if the model is a CLIP model.
+        Check if the model is a CLIP or PE model.
 
         Returns:
-            bool: True if the model is a CLIP model, False otherwise.
+            bool: True if the model is a CLIP or PE model, False otherwise.
         """
-        return "clip" in self.name
+        return "clip" in self.name or "pe_core" in self.name
 
     def _build_model(self) -> nn.Module:
         """
