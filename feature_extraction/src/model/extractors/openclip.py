@@ -18,14 +18,14 @@ class OpenClipModel(GenericFeatureExtractor):
     from input images.
     """
 
-    def __init__(self, **kargs):
+    def __init__(self, **kwargs):
         """
         Initialize the OpenClipModel.
 
         Args:
-            **kargs: Additional keyword arguments for the parent class.
+            **kwargs: Additional keyword arguments for the parent class.
         """
-        super(OpenClipModel, self).__init__(**kargs)
+        super(OpenClipModel, self).__init__(**kwargs)
         if self.name != "RN50.openai":
             raise NotImplementedError(
                 f"Model '{self.name}' is not supported. Only 'RN50.openai' is supported for OpenClip. "

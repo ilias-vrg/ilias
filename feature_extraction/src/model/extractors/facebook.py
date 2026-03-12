@@ -17,14 +17,14 @@ MODEL_WEIGHTS = {
 
 
 class FBModel(GenericFeatureExtractor):
-    def __init__(self, **kargs):
+    def __init__(self, **kwargs):
         """
         Initialize the FBModel.
 
         Args:
-            **kargs: Additional arguments passed to the GenericFeatureExtractor.
+            **kwargs: Additional arguments passed to the GenericFeatureExtractor.
         """
-        super(FBModel, self).__init__(**kargs)
+        super(FBModel, self).__init__(**kwargs)
 
         if "moco" in self.name and self.pooling != "head":
             raise NotImplementedError("Only 'head' pooling is implemented for MoCo")

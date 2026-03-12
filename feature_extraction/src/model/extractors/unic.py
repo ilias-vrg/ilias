@@ -11,8 +11,8 @@ from ...datasets.transforms import MultiplierPadding
 
 
 class UNICModel(GenericFeatureExtractor):
-    def __init__(self, **kargs):
-        super(UNICModel, self).__init__(**kargs)
+    def __init__(self, **kwargs):
+        super(UNICModel, self).__init__(**kwargs)
         assert self.pooling == "head", NotImplementedError(
             "Other pooling operations are not implemented for UNIC"
         )

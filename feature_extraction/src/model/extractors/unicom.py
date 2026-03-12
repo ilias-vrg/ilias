@@ -24,7 +24,6 @@ from torchvision.transforms import (
 from .generic_extractor import GenericFeatureExtractor
 from ...datasets.transforms import MultiplierPadding
 
-
 __all__ = ["load", "available_models"]
 
 _MODELS = {

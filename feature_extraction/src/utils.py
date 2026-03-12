@@ -114,7 +114,7 @@ def batching(tensor: Any, batch_sz: int) -> Generator[Any, None, None]:
         yield tensor[i : i + batch_sz]
 
 
-def load_image_ids(file_path: str) -> set:
+def load_image_ids(file_path: str) -> list:
     """
     Load image IDs from a text file.
 
@@ -122,9 +122,9 @@ def load_image_ids(file_path: str) -> set:
         file_path (str): Path to the text file containing image IDs.
 
     Returns:
-        set: A set of image IDs.
+        list: A list of image IDs.
     """
-    image_ids = np.loadtxt(file_path, dtype=str, delimiter=",")
-    if image_ids.ndim > 1:
-        image_ids = image_ids[:, 0]
-    return image_ids.tolist()
+    with open(file_path, "r") as f:
+        image_ids = f.readlines()
+    image_ids = [line.strip().split(",")[0] for line in image_ids]
+    return image_ids

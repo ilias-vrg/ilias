@@ -12,14 +12,14 @@ from ...datasets.transforms import MultiplierPadding
 
 
 class TimmModel(GenericFeatureExtractor):
-    def __init__(self, **kargs):
+    def __init__(self, **kwargs):
         """
         Initialize the TimmModel.
 
         Args:
-            **kargs: Additional arguments passed to the GenericFeatureExtractor.
+            **kwargs: Additional arguments passed to the GenericFeatureExtractor.
         """
-        super(TimmModel, self).__init__(**kargs)
+        super(TimmModel, self).__init__(**kwargs)
 
         self.model = self._build_model()
         self.pad = self._initialize_padding()

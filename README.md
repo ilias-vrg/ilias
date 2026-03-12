@@ -25,7 +25,7 @@ You can find instructions for downloading ILIAS and relevant code for the variou
 * [kNN search](knn_search)
 * [evaluation](evaluation)
 * [linear adaptation](linear_adaptation)
-* re-ranking with local representations (coming soon...)
+* [re-ranking](local_reranking)
 
 ## Citation
 

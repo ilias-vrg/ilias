@@ -7,7 +7,7 @@ from typing import List
 from torchvision.transforms import InterpolationMode
 from torchvision.transforms import functional as TF
 
-from ..pooling import PoolingFn
+from ..pooling import PoolingFn, LocalDetector
 from ...utils import IMAGENET_MEAN, IMAGENET_STD
 
 
@@ -18,14 +18,14 @@ class GenericFeatureExtractor(nn.Module, ABC):
     It provides a common interface for feature extraction and their required attributes.
     """
 
-    def __init__(self, model: str, pooling: str, **kargs):
+    def __init__(self, model: str, pooling: str, **kwargs):
         """
         Initialize the GenericFeatureExtractor.
 
         Args:
             model (str): Name of the model.
             pooling (str): Pooling method to use.
-            **kargs: Additional arguments.
+            **kwargs: Additional arguments.
         """
         super(GenericFeatureExtractor, self).__init__()
 
@@ -35,7 +35,12 @@ class GenericFeatureExtractor(nn.Module, ABC):
         self.std = IMAGENET_STD
 
         self.pooling = pooling
-        self.pooling_local = PoolingFn[pooling.upper()].get_fn()
+        self.pooling_local = PoolingFn[pooling.upper()].get_fn(**kwargs)
+        self.l2_norm = (
+            self._l2_norm
+            if not isinstance(self.pooling_local, LocalDetector)
+            else nn.Identity()
+        )
 
     @abstractmethod
     def _extract_features(self, x: torch.Tensor) -> torch.Tensor:
@@ -65,7 +70,7 @@ class GenericFeatureExtractor(nn.Module, ABC):
             torch.Tensor: Normalized feature tensor.
         """
         if scales == [1] and rotate == [0]:
-            return self._l2_norm(self._extract_features(img))
+            return self.l2_norm(self._extract_features(img))
 
         features = []
         for scale in scales:
@@ -73,10 +78,10 @@ class GenericFeatureExtractor(nn.Module, ABC):
             for angle in rotate:
                 img_transformed = self._rotate_image(img_scaled, angle)
                 features.append(
-                    self._l2_norm(self._extract_features(img_transformed).unsqueeze(1))
+                    self.l2_norm(self._extract_features(img_transformed).unsqueeze(1))
                 )
 
-        return self._l2_norm(torch.cat(features, dim=1).mean(dim=1))
+        return self.l2_norm(torch.cat(features, dim=1).mean(dim=1))
 
     def _rescale_image(self, img: torch.Tensor, scale: float) -> torch.Tensor:
         """

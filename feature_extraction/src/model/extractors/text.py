@@ -16,13 +16,13 @@ class TextFeatureExtractor(nn.Module):
     Feature extractor class for text models.
     """
 
-    def __init__(self, model: str, **kargs):
+    def __init__(self, model: str, **kwargs):
         """
         Initialize the TextFeatureExtractor.
 
         Args:
             model (str): Name of the model.
-            **kargs: Additional arguments.
+            **kwargs: Additional arguments.
         """
         super(TextFeatureExtractor, self).__init__()
         if model not in MODEL_MAPPING:

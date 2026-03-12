@@ -3,9 +3,12 @@ import math
 import torch
 import torch.nn as nn
 import torch.nn.functional as F
+import numpy as np
 from typing import Callable, List, Union
 
 from einops import rearrange, reduce
+
+from .layers import SpatialAttention2d, BinarizationLayer
 
 
 class PoolingFn(enum.Enum):
@@ -31,6 +34,7 @@ class PoolingFn(enum.Enum):
     RMAC = enum.auto()
     RGEM = enum.auto()
     LOCAL = enum.auto()
+    DETECTOR = enum.auto()
 
     def get_fn(self, **kwargs) -> Callable:
         """
@@ -60,6 +64,7 @@ class PoolingFn(enum.Enum):
             self.RMAC: RMAC,
             self.RGEM: RGeM,
             self.LOCAL: Local,
+            self.DETECTOR: LocalDetector,
         }[self]
 
 
@@ -368,7 +373,7 @@ class RGeM(nn.Module):
     """
 
     def __init__(
-        self, L: List[int] = [1, 2, 3], p: float = 3.0, eps: float = 1e-6
+        self, L: List[int] = [1, 2, 3], p: float = 3.0, eps: float = 1e-6, **kwargs
     ) -> None:
         super(RGeM, self).__init__()
         self.p = p
@@ -424,4 +429,60 @@ class Local(nn.Module):
         return _local(x)
 
     def __repr__(self) -> str:
+        return self.__class__.__name__ + "()"
+
+
+class LocalDetector(nn.Module):
+    def __init__(self, dim=768, top_n=600, binarize_local=True, **kwargs):
+        super(LocalDetector, self).__init__()
+        self.top_n = top_n
+        self.detector = SpatialAttention2d(dim)
+
+        cpt = torch.hub.load_state_dict_from_url(
+            f"https://vrg.fel.cvut.cz/ilias_data/ames/dinov2_detector.pt",
+            map_location=torch.device("cpu"),
+        )
+        self.detector.load_state_dict(cpt["state"], strict=True)
+        self.detector.cuda().eval()
+        self.binarize = binarize_local
+
+        if binarize_local:
+            self.projection = BinarizationLayer(dims=768, bits=128, trainable=False)
+            cpt = torch.hub.load_state_dict_from_url(
+                f"https://vrg.fel.cvut.cz/ilias_data/ames/dinov2_binarization.pt",
+                map_location=torch.device("cpu"),
+            )
+        else:
+            self.projection = nn.Sequential(nn.Linear(768, 128), nn.LayerNorm(128))
+            cpt = torch.hub.load_state_dict_from_url(
+                f"https://vrg.fel.cvut.cz/ilias_data/ames/dinov2_projection.pt",
+                map_location=torch.device("cpu"),
+            )
+        self.projection.load_state_dict(cpt["state"], strict=True)
+        self.projection.cuda().eval()
+
+    def forward(self, x):
+        feats, weights = self.detector(x)
+        feats = feats.flatten(start_dim=-2).permute(0, 2, 1)
+        weights = weights.flatten(start_dim=1)
+        seq_len = min(feats.shape[1], self.top_n)
+
+        weights, ids = torch.topk(weights, k=seq_len, dim=1)
+        top_feats = torch.gather(feats, 1, ids[..., None].repeat(1, 1, feats.shape[-1]))
+        top_feats = F.normalize(top_feats, p=2, dim=-1, eps=1e-15)
+
+        if self.binarize:
+            top_feats = self.projection(top_feats)
+            top_feats = np.packbits(top_feats.cpu().numpy() > 0, axis=-1)
+            top_feats = torch.from_numpy(top_feats)
+        else:
+            top_feats = self.projection(top_feats)
+
+        top_feats = F.pad(
+            top_feats, (0, 0, 0, self.top_n - seq_len, 0, 0), "constant", 0
+        )
+
+        return top_feats
+
+    def __repr__(self):
         return self.__class__.__name__ + "()"

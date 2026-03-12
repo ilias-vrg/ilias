@@ -437,6 +437,12 @@ if __name__ == "__main__":
         default=None,
         help="File containing image IDs to extract features for",
     )
+    parser.add_argument(
+        "--binarize_local",
+        type=utils.bool_flag,
+        default=True,
+        help="Store binarized local features if True",
+    )
     args = parser.parse_args()
 
     print("\nInput arguments")

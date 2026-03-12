@@ -164,7 +164,7 @@ class BottleneckTransform(nn.Module):
     def __init__(self, w_in, w_out, stride, w_b, num_gs, relup_):
         super(BottleneckTransform, self).__init__()
         # MSRA -> stride=2 is on 1x1; TH/C2 -> stride=2 is on 3x3
-        (s1, s3) = (stride, 1) if STRIDE_1X1 else (1, stride)
+        s1, s3 = (stride, 1) if STRIDE_1X1 else (1, stride)
         self.a = nn.Conv2d(w_in, w_b, 1, stride=s1, padding=0, bias=False)
         self.a_bn = nn.BatchNorm2d(w_b, eps=BN_EPS, momentum=BN_MOM)
         if w_out == 256 and relup_:
@@ -286,7 +286,7 @@ class ResNet(nn.Module):
 
     def _construct(self):
         g, gw = NUM_GROUPS, WIDTH_PER_GROUP
-        (d1, d2, d3, d4) = _IN_STAGE_DS[self.RESNET_DEPTH]
+        d1, d2, d3, d4 = _IN_STAGE_DS[self.RESNET_DEPTH]
         w_b = gw * g
         self.stem = ResStemIN(3, 64)
         self.s1 = ResStage(
@@ -440,8 +440,8 @@ def load_cvnet(model_name, relup_=False):
 
 
 class CVNetModel(GenericFeatureExtractor):
-    def __init__(self, **kargs):
-        super(CVNetModel, self).__init__(**kargs)
+    def __init__(self, **kwargs):
+        super(CVNetModel, self).__init__(**kwargs)
         assert (
             self.pooling == "head"
         ), f"{self.pooling.upper()} pooling operation is not appicable for CVNet models"
