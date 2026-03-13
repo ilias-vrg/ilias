@@ -35,10 +35,7 @@ Ensure the following are installed on your system:
 
 ## Usage
 
-* Run the `feature_extraction/extract.py` script to extract local features via `detector` pooling that uses a pre-trained local feature detector.
-* The code currently only supports extraction of DINOv2-base local features.
-* The features are automatically binarized to limit the required memory.
-* Optionally provide a shortlist as `image_ids` in the form of txt file with newline-separated image paths. These shortlist files can be created via a helper script that accepts the global ranking similarity file created by the `knn_search` module:
+* [Optional] Generate a shortlist as `image_ids` in the form of txt file with newline-separated image paths. These shortlist files can be created via a helper script that accepts the global ranking similarity file created by the `knn_search` module:
 
 ```bash
 python scripts/get_shortlist.py \
@@ -46,6 +43,9 @@ python scripts/get_shortlist.py \
   --save_dir </path/to/shortlist>
 ```
 
+* Run the `feature_extraction/extract.py` script to extract local features via `detector` pooling that uses a pre-trained local feature detector.
+* The code currently only supports extraction of DINOv2-base local features.
+* The features are automatically binarized to limit the required memory.
 
 ```bash
 python feature_extraction/extract.py \
@@ -62,7 +62,6 @@ python feature_extraction/extract.py \
   --image_ids </path/to/shortlist>
 ```
 
-* We also provide pre-extracted binary local features for two models (SigLIP-L@384 and PE-L@336) [here](https://vrg.fel.cvut.cz/ilias_data/features/). 
 * After pre-extracting the features, run the `rerank.py` script with the following arguments:
 
 ```bash
@@ -105,7 +104,17 @@ python local_reranking/rerank.py \
 
 * In the `distractor_hdf5` argument, the `{idx}` indicates the location in the path name that corresponds to the index of the distractor hdf5 files. It is replaced during loading with the corresponding index values according to `total_distractors`.
 
+### Output
+
+* The script supports two formats for storing the refined similarity scores, similar to [knn_search](knn_search#output).
+
+### Notes
+
+* We provide the extracted local binary features for shortlists based on two global models with linear adaptation (SigLIP-L@384 and PE-L@336) [here](https://vrg.fel.cvut.cz/ilias_data/features/).
+
+* We also provide the estimated similarities refined with AMES for the two shortlists [here](https://vrg.fel.cvut.cz/ilias_data/similarities/).
+
 ___
 
 > [!WARNING]
-> Please note that the AMES model used for re-ranking in the ILIAS submission differs from the version in the official [AMES repository](https://github.com/pavelsuma/ames). To ensure exact reproduction of our results and for archival purposes, we host the [specific model](https://vrg.fel.cvut.cz/ilias_data/ames/dinov2_ames_dist.pt) version separately within the ILIAS project files.
+> Please note that the AMES model used for re-ranking in the ILIAS paper differs from the version in the official [AMES repository](https://github.com/pavelsuma/ames). To ensure exact reproduction of our results and for archival purposes, we host the [specific model](https://vrg.fel.cvut.cz/ilias_data/ames/) version separately within the ILIAS resources.

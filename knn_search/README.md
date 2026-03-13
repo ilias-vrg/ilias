@@ -118,6 +118,6 @@ Pickle
 
 ### Estimated similarities
 
-* We provide the estimated similarities based some selected models [here](https://vrg.fel.cvut.cz/ilias_data/similarities/).
+* We provide the estimated similarities based on some selected models [here](https://vrg.fel.cvut.cz/ilias_data/similarities/).
 
 * [Contact us](mailto:kordogeo@gel.cvut.cz?subject=[ILIAS]%20request%20for%20similarities) to provide similarities based on models not included in the above link.
