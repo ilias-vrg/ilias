@@ -112,6 +112,8 @@ python local_reranking/rerank.py \
 
 * We provide the extracted local binary features for shortlists based on two global models with linear adaptation (SigLIP-L@384 and PE-L@336) [here](https://vrg.fel.cvut.cz/ilias_data/features/).
 
+* The images of these shortlists (the union of the top-1000 YFCC100M images over all queries) are also available as tars [here](https://vrg.fel.cvut.cz/ilias_data/shortlists/), see [download](../download/README.md#shortlists), so local features can be extracted for them without downloading the 100M distractors.
+
 * We also provide the estimated similarities refined with AMES for the two shortlists [here](https://vrg.fel.cvut.cz/ilias_data/similarities/).
 
 ___

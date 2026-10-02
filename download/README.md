@@ -94,6 +94,57 @@ The compiled taxonomy of the ILIAS object instances is provided in [`taxonomy.js
 
 Each fine-level category contains the object instance identifiers. The `other` category includes objects that do not fit into any category. 
 
+## Shortlists
+
+* For experiments that do not require the full set of 100M distractors, we provide **shortlists** for selected global models. A shortlist is the union of the top-1000 YFCC100M images retrieved for each of the 1,232 image queries when searching with that model in the full 100M distractors. The shortlists are hosted [here](https://vrg.fel.cvut.cz/ilias_data/shortlists/).
+
+### folder structure
+
+* There is one folder per model and search setting, and each shortlist is split into 10 tars of ~5GB.
+
+```
+shortlists
+└── <model>
+    ├── full_i2i
+    │   ├── shortlist-000000.tar
+    │   ├── ...
+    │   └── shortlist-000009.tar
+    └── full_i2i_adapt
+        ├── shortlist-000000.tar
+        ├── ...
+        └── shortlist-000009.tar
+```
+
+where `full_i2i` corresponds to global search without and `full_i2i_adapt` to global search with the linear adaptation layer.
+
+* [Contact us](mailto:kordogeo@fel.cvut.cz?subject=[ILIAS]%20request%20for%20shortlist) to provide shortlists for models or search settings not included in the above link.
+
+### image ids
+
+* Each shortlist contains exactly the YFCC100M images that appear in the corresponding [similarity file](https://vrg.fel.cvut.cz/ilias_data/similarities/) of the model, i.e. `similarities_full_i2i.json` or `similarities_full_i2i_adapt.json`. Positive images are not included, as they are part of the ILIAS core.
+
+* The tar members are named after their origin, i.e. `<shard>.tar/<image_id>.jpg`, so that the image ids match the ones used in the similarity files and in the ground truth without any remapping.
+
+e.g.
+
+```
+yfcc100m-000651.tar/ad70c550585cd02f854c84e5be96ef.jpg
+```
+
+### downloading
+
+* Run the following command to download a shortlist, providing the model and the search setting.
+
+```bash
+wget -r -np -nH --cut-dirs=1 -A 'shortlist-*.tar' https://vrg.fel.cvut.cz/ilias_data/shortlists/<model>/<setting>/
+```
+
+e.g.
+
+```bash
+wget -r -np -nH --cut-dirs=1 -A 'shortlist-*.tar' https://vrg.fel.cvut.cz/ilias_data/shortlists/vit_pe_core_large_patch14_336.fb/full_i2i_adapt/
+```
+
 ## License
 
 All images captured by us or external collaborators are shared under [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/deed.en). The full list of captured images can be found [here](../misc/ilias_core_captured.txt). All external collaborators have signed consent agreements to share their images under this license. Images downloaded from the internet are distributed under their original licenses, which can be found via their respective URLs.

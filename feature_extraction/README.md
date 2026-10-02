@@ -162,11 +162,31 @@ python feature_extraction/extract.py \
   --partition distractors \
   --dataset_dir /path/to/tars \
   --hdf5_dir /path/to/hdf5 \
+  --hdf5_name features_mini \
   --framework timm \
   --model vit_large_patch16_siglip_384.webli \
   --resolution 512 \
   --selected_ids /path/to/mini-ilias-ids
 ```
+
+#### **shortlists**
+
+* To extract features for a [shortlist](../download/README.md#shortlists) instead of the full 100M distractors, point `dataset_dir` at the directory with its 10 `shortlist-*.tar` files. All of them fit in a single batch, so one command produces a single HDF5 file. Provide a different `hdf5_name` (default: `features`) to avoid overwriting the first file of a full extraction, i.e. `features_distractors_00000.hdf5`, if it is stored in the same directory.
+
+```bash
+python feature_extraction/extract.py \
+  --partition distractors \
+  --dataset_dir /path/to/shortlist/ \
+  --hdf5_dir /path/to/hdf5 \
+  --hdf5_name features_shortlist \
+  --framework timm \
+  --model vit_large_patch16_siglip_384.webli \
+  --resolution 512
+```
+
+* This will produce the file `features_shortlist_distractors_00000.hdf5` in the `/path/to/hdf5` directory.
+
+* The tar members of a shortlist are named `<shard>.tar/<image_id>.jpg`, so the stored ids are identical to the ones of the full 100M extraction and of the provided [similarity files](https://vrg.fel.cvut.cz/ilias_data/similarities/).
 
 ### Model settings
 
@@ -182,4 +202,4 @@ python feature_extraction/extract.py \
 
 * We provide the extracted features for some selected models [here](https://vrg.fel.cvut.cz/ilias_data/features/).
 
-* [Contact us](mailto:kordogeo@gel.cvut.cz?subject=[ILIAS]%20request%20for%20features) to provide features for models not included in the above link.
+* [Contact us](mailto:kordogeo@fel.cvut.cz?subject=[ILIAS]%20request%20for%20features) to provide features for models not included in the above link.
