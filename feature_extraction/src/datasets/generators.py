@@ -48,7 +48,9 @@ def merge_id_shard(sample: dict) -> dict:
     """
     shard = osp.basename(sample["shard"])
     image_id = sample["id"]
-    sample["id"] = f"{shard}/{image_id}"
+    if "/" not in image_id:
+        image_id = f"{shard}/{image_id}"
+    sample["id"] = image_id
     return sample
 
 
@@ -318,8 +320,8 @@ class ImageDataset(Dataset):
         """
         images_id = self.image_ids[idx]
         image_path = osp.join(self.root_dir, images_id)
-        image_rgb = Image.open(image_path)
-        image_rgb = image_rgb.convert("RGB")
+        with Image.open(image_path) as image_file:
+            image_rgb = image_file.convert("RGB")
         image_rgb = ImageOps.exif_transpose(image_rgb)
         org_size = image_rgb.size[::-1]
 

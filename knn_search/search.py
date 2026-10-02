@@ -48,6 +48,8 @@ def main(args):
     # Perform the k-NN search.
     sims, ranks = knn.search(query_feat)
 
+    dataset.close()
+
     # Ensure the directory for saving results exists.
     os.makedirs(args.save_dir, exist_ok=True)
 

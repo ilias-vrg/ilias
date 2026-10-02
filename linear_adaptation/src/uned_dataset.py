@@ -1,4 +1,4 @@
-from typing import defaultdict
+from collections import defaultdict
 
 from src.utils import load_features
 
@@ -22,6 +22,7 @@ class UnEDFeatureDataset:
         print("> loading features from HDF5 files...")
 
         self.uned_feat, self.uned_ids = load_features(uned_hdf5)
+        self._file = self.uned_feat.file
 
         with open(uned_info_path, "r") as f:
             lines = f.readlines()
@@ -69,3 +70,18 @@ class UnEDFeatureDataset:
         self.encoded_indices = [
             encode_combination(c, d) for c, d in zip(self.labels, self.domains)
         ]
+
+    def close(self) -> None:
+        """Close the HDF5 file opened by this dataset."""
+        if self._file is not None:
+            try:
+                self._file.close()
+            except Exception:
+                pass
+            self._file = None
+
+    def __enter__(self) -> "UnEDFeatureDataset":
+        return self
+
+    def __exit__(self, *exc) -> None:
+        self.close()

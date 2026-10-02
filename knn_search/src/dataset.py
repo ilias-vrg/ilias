@@ -31,6 +31,7 @@ class FeatureDataset(Dataset):
         print("> loading features from HDF5 files...")
         self.query_feat, self.query_ids = load_features(query_hdf5)
         self.positive_feat, self.positive_ids = load_features(positive_hdf5)
+        self._files = [self.query_feat.file, self.positive_feat.file]
 
         self.distractor_feat = []
         self.distractor_ids = []
@@ -40,6 +41,7 @@ class FeatureDataset(Dataset):
                 feats, idx = load_features(distractor_hdf5.format(idx=f"{i:05d}"))
                 self.distractor_feat.append(feats)
                 self.distractor_ids.append(idx[:])
+                self._files.append(feats.file)
 
         self.num_pos = len(self.positive_ids)
         self.chunk_size = len(self.distractor_ids[0]) if self.distractor_ids else 0
@@ -81,6 +83,21 @@ class FeatureDataset(Dataset):
                 filtered_positions.append(i)
         filtered_idx = idx[filtered_positions]
         return filtered_idx, filtered_positions
+
+    def close(self) -> None:
+        """Close all HDF5 files opened by this dataset."""
+        for f in self._files:
+            try:
+                f.close()
+            except Exception:
+                pass
+        self._files = []
+
+    def __enter__(self) -> "FeatureDataset":
+        return self
+
+    def __exit__(self, *exc) -> None:
+        self.close()
 
     def get_queries(self) -> Tuple[np.ndarray, np.ndarray]:
         """

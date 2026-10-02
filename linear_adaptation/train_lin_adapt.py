@@ -34,7 +34,11 @@ def main(args):
         use_gpu=args.use_gpu,
     )
 
-    os.makedirs(os.path.dirname(args.save_dir), exist_ok=True)
+    dataset.close()
+
+    save_dirname = os.path.dirname(args.save_dir)
+    if save_dirname:
+        os.makedirs(save_dirname, exist_ok=True)
     torch.save(adaptation_layer.state_dict(), args.save_dir)
 
     print(f"trained linear adaptation layer is saved to: {args.save_dir}")
